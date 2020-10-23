@@ -276,12 +276,17 @@ def processPackages(args, packages, build):
         pkg = packages[pkgname]
         if pkg.isWanted() or pkgname == ROOT_PKG:
             needed_map[pkgname] = pkg
-
+    eprint('-----')
+    eprint(str(needed_map))
+    eprint('-----')
     # Validate package dependency references
     for pkgname in needed_map:
         pkg = needed_map[pkgname]
         for t in pkg.deps:
+            eprint('t: '+str(t))
             for d in pkg.deps[t]:
+                eprint('d: '+str(d))
+                eprint(split_package(d)[0])
                 if split_package(d)[0] not in needed_map and not args.ignore_invalid:
                     msg = 'Invalid package reference: dependency %s in package %s::PKG_DEPENDS_%s is not valid' % (d, pkgname, t.upper())
                     if args.warn_invalid:
